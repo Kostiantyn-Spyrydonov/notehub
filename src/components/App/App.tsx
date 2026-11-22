@@ -2,6 +2,7 @@ import css from "./App.module.css";
 import { fetchNotes } from "../../services/noteService";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 import NoteList from "../NoteList/NoteList";
 import SearchBox from "../SearchBox/SearchBox";
 
@@ -15,15 +16,15 @@ export default function App() {
     placeholderData: keepPreviousData,
   });
 
-  const handleSearch = (value: string) => {
-    setSearch(value);
+  const handleSearch = useDebouncedCallback((newValue: string) => {
+    setSearch(newValue);
     setPage(1);
-  };
+  }, 500);
 
   return (
     <div className={css.app}>
       <header>
-        <SearchBox value={search} onChangeText={handleSearch} />
+        <SearchBox onChangeText={handleSearch} />
       </header>
       <main>
         {isLoading && <p>Loading...</p>}
