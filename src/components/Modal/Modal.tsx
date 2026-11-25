@@ -5,9 +5,10 @@ import css from "./Modal.module.css";
 interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
+  label: string;
 }
 
-export default function Modal({ onClose, children }: ModalProps) {
+export default function Modal({ onClose, children, label }: ModalProps) {
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -34,6 +35,7 @@ export default function Modal({ onClose, children }: ModalProps) {
       role="dialog"
       aria-modal="true"
       onClick={handleBackdropClick}
+      aria-label={label}
     >
       <div className={css.modal}>{children}</div>
     </div>,

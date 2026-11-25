@@ -42,7 +42,7 @@ export default function App() {
       </main>
       <footer></footer>
       {isModalOpen && (
-        <Modal onClose={closeModal}>
+        <Modal onClose={closeModal} label="Create note">
           <NoteForm onClose={closeModal} />
         </Modal>
       )}
