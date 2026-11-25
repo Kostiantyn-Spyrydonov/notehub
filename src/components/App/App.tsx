@@ -5,10 +5,16 @@ import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import NoteList from "../NoteList/NoteList";
 import SearchBox from "../SearchBox/SearchBox";
+import Modal from "../Modal/Modal";
+import NoteForm from "../NoteForm/NoteForm";
 
 export default function App() {
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["notes", search, page],
@@ -23,8 +29,11 @@ export default function App() {
 
   return (
     <div className={css.app}>
-      <header>
+      <header className={css.toolbar}>
         <SearchBox onChangeText={handleSearch} />
+        <button className={css.button} type="button" onClick={openModal}>
+          Create note +
+        </button>
       </header>
       <main>
         {isLoading && <p>Loading...</p>}
@@ -32,6 +41,11 @@ export default function App() {
         {isError && <p>Something went wrong</p>}
       </main>
       <footer></footer>
+      {isModalOpen && (
+        <Modal onClose={closeModal}>
+          <NoteForm onClose={closeModal} />
+        </Modal>
+      )}
     </div>
   );
 }
