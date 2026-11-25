@@ -1,7 +1,8 @@
 import css from "./NoteForm.module.css";
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
 import { useId } from "react";
-import type { NoteTag } from "../../types/note";
+import { NOTE_TAGS, type NoteTag } from "../../types/note";
+import * as Yup from "yup";
 
 interface NoteFormProps {
   onClose: () => void;
@@ -19,6 +20,15 @@ const initialValues: NoteFormValues = {
   tag: "Todo",
 };
 
+const validationSchema = Yup.object().shape({
+  title: Yup.string()
+    .min(3, "Title must be at least 3 characters")
+    .max(50, "Title is too long")
+    .required("Title is required"),
+  content: Yup.string().max(500, "Content is too long"),
+  tag: Yup.string().oneOf(NOTE_TAGS).required("Tag is required"),
+});
+
 export default function NoteForm({ onClose }: NoteFormProps) {
   const fieldId = useId();
   const handleSubmit = (
@@ -30,7 +40,11 @@ export default function NoteForm({ onClose }: NoteFormProps) {
   };
 
   return (
-    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validationSchema={validationSchema}
+    >
       <Form className={css.form}>
         <div className={css.formGroup}>
           <label htmlFor={`${fieldId}-title`}>Title</label>
