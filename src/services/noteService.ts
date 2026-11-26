@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Note } from "../types/note";
+import type { Note, NewNote } from "../types/note";
 
 interface FetchNotesParams {
   search: string;
@@ -20,6 +20,13 @@ export async function fetchNotes({
 }: FetchNotesParams): Promise<FetchNotesResponse> {
   const response = await axios.get<FetchNotesResponse>(NOTES_URL, {
     params: { page, perPage: 12, search },
+    headers: { Authorization: `Bearer ${TOKEN}` },
+  });
+  return response.data;
+}
+
+export async function createNote(newNote: NewNote): Promise<Note> {
+  const response = await axios.post<Note>(NOTES_URL, newNote, {
     headers: { Authorization: `Bearer ${TOKEN}` },
   });
   return response.data;

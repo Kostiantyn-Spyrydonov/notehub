@@ -1,20 +1,14 @@
 import css from "./NoteForm.module.css";
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
 import { useId } from "react";
-import { NOTE_TAGS, type NoteTag } from "../../types/note";
+import { NOTE_TAGS, type NewNote } from "../../types/note";
 import * as Yup from "yup";
 
 interface NoteFormProps {
   onClose: () => void;
 }
 
-interface NoteFormValues {
-  title: string;
-  content: string;
-  tag: NoteTag;
-}
-
-const initialValues: NoteFormValues = {
+const initialValues: NewNote = {
   title: "",
   content: "",
   tag: "Todo",
@@ -33,10 +27,7 @@ const validationSchema = Yup.object().shape({
 
 export default function NoteForm({ onClose }: NoteFormProps) {
   const fieldId = useId();
-  const handleSubmit = (
-    values: NoteFormValues,
-    actions: FormikHelpers<NoteFormValues>,
-  ) => {
+  const handleSubmit = (values: NewNote, actions: FormikHelpers<NewNote>) => {
     console.log(values);
     actions.resetForm();
   };

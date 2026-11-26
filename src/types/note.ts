@@ -16,3 +16,9 @@ export interface Note {
   updatedAt: string;
   tag: NoteTag;
 }
+
+export interface NewNote {
+  title: string;
+  content: string;
+  tag: NoteTag;
+}
