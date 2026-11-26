@@ -7,6 +7,7 @@ import NoteList from "../NoteList/NoteList";
 import SearchBox from "../SearchBox/SearchBox";
 import Modal from "../Modal/Modal";
 import NoteForm from "../NoteForm/NoteForm";
+import Pagination from "../Pagination/Pagination";
 
 export default function App() {
   const [search, setSearch] = useState<string>("");
@@ -22,6 +23,8 @@ export default function App() {
     placeholderData: keepPreviousData,
   });
 
+  const totalPages = data?.totalPages ?? 0;
+
   const handleSearch = useDebouncedCallback((newValue: string) => {
     setSearch(newValue);
     setPage(1);
@@ -31,6 +34,13 @@ export default function App() {
     <div className={css.app}>
       <header className={css.toolbar}>
         <SearchBox onChangeText={handleSearch} />
+        {totalPages > 1 && (
+          <Pagination
+            totalPages={totalPages}
+            currentPage={page}
+            onPageChange={setPage}
+          />
+        )}
         <button className={css.button} type="button" onClick={openModal}>
           Create note +
         </button>
