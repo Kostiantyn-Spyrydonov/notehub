@@ -31,3 +31,10 @@ export async function createNote(newNote: NewNote): Promise<Note> {
   });
   return response.data;
 }
+
+export async function deleteNote(id: string): Promise<Note> {
+  const response = await axios.delete<Note>(`${NOTES_URL}/${id}`, {
+    headers: { Authorization: `Bearer ${TOKEN}` },
+  });
+  return response.data;
+}
